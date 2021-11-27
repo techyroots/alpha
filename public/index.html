@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.5/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <title>React App</title>
+</head>
+<script>
+  const tokencontract_address = "0xA0f4d75ac6D669CEc9a9B520e224D2Fd615dDcfB";
+  const tokenabi = [{ "inputs": [{ "internalType": "string", "name": "_name", "type": "string" }, { "internalType": "string", "name": "_symbol", "type": "string" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "spender", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" }], "name": "allowance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "approve", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_from", "type": "address" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "burn", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "subtractedValue", "type": "uint256" }], "name": "decreaseAllowance", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "addedValue", "type": "uint256" }], "name": "increaseAllowance", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_receiver", "type": "address" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "mint", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "transfer", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "sender", "type": "address" }, { "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }]
+
+  const contract_address = "0xeF0e3f01dfca86bf2D6693E68E077A7740280B11";
+  const contract_abi = [{ "inputs": [{ "internalType": "string", "name": "_name", "type": "string" }, { "internalType": "string", "name": "_symbol", "type": "string" }, { "internalType": "address", "name": "_depositToken", "type": "address" }, { "internalType": "address", "name": "_rewardToken", "type": "address" }, { "internalType": "address", "name": "_escrowPool", "type": "address" }, { "internalType": "uint256", "name": "_escrowPortion", "type": "uint256" }, { "internalType": "uint256", "name": "_escrowDuration", "type": "uint256" }, { "internalType": "uint256", "name": "_maxBonus", "type": "uint256" }, { "internalType": "uint256", "name": "_maxLockDuration", "type": "uint256" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "spender", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "delegator", "type": "address" }, { "indexed": true, "internalType": "address", "name": "fromDelegate", "type": "address" }, { "indexed": true, "internalType": "address", "name": "toDelegate", "type": "address" }], "name": "DelegateChanged", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "delegate", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "previousBalance", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "newBalance", "type": "uint256" }], "name": "DelegateVotesChanged", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "duration", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "receiver", "type": "address" }, { "indexed": true, "internalType": "address", "name": "from", "type": "address" }], "name": "Deposited", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "_from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "_receiver", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "_escrowedAmount", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "_nonEscrowedAmount", "type": "uint256" }], "name": "RewardsClaimed", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "by", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "rewardsDistributed", "type": "uint256" }], "name": "RewardsDistributed", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "by", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "fundsWithdrawn", "type": "uint256" }], "name": "RewardsWithdrawn", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "indexed": true, "internalType": "bytes32", "name": "previousAdminRole", "type": "bytes32" }, { "indexed": true, "internalType": "bytes32", "name": "newAdminRole", "type": "bytes32" }], "name": "RoleAdminChanged", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "indexed": true, "internalType": "address", "name": "account", "type": "address" }, { "indexed": true, "internalType": "address", "name": "sender", "type": "address" }], "name": "RoleGranted", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "indexed": true, "internalType": "address", "name": "account", "type": "address" }, { "indexed": true, "internalType": "address", "name": "sender", "type": "address" }], "name": "RoleRevoked", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "by", "type": "address" }, { "indexed": true, "internalType": "address", "name": "receiver", "type": "address" }, { "indexed": true, "internalType": "address", "name": "token", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "TokenSaved", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "uint256", "name": "depositId", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "receiver", "type": "address" }, { "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "Withdrawn", "type": "event" }, { "inputs": [], "name": "DEFAULT_ADMIN_ROLE", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "DOMAIN_SEPARATOR", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MIN_LOCK_DURATION", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "POINTS_MULTIPLIER", "outputs": [{ "internalType": "uint128", "name": "", "type": "uint128" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "TOKEN_SAVER_ROLE", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" }], "name": "allowance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "approve", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }, { "internalType": "uint32", "name": "pos", "type": "uint32" }], "name": "checkpoints", "outputs": [{ "components": [{ "internalType": "uint32", "name": "fromBlock", "type": "uint32" }, { "internalType": "uint224", "name": "votes", "type": "uint224" }], "internalType": "struct ERC20Votes.Checkpoint", "name": "", "type": "tuple" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_receiver", "type": "address" }], "name": "claimRewards", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_account", "type": "address" }], "name": "cumulativeRewardsOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "subtractedValue", "type": "uint256" }], "name": "decreaseAllowance", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "delegatee", "type": "address" }], "name": "delegate", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "delegatee", "type": "address" }, { "internalType": "uint256", "name": "nonce", "type": "uint256" }, { "internalType": "uint256", "name": "expiry", "type": "uint256" }, { "internalType": "uint8", "name": "v", "type": "uint8" }, { "internalType": "bytes32", "name": "r", "type": "bytes32" }, { "internalType": "bytes32", "name": "s", "type": "bytes32" }], "name": "delegateBySig", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "delegates", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }, { "internalType": "uint256", "name": "_duration", "type": "uint256" }, { "internalType": "address", "name": "_receiver", "type": "address" }], "name": "deposit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "depositToken", "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }, { "internalType": "uint256", "name": "", "type": "uint256" }], "name": "depositsOf", "outputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint64", "name": "start", "type": "uint64" }, { "internalType": "uint64", "name": "end", "type": "uint64" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "distributeRewards", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "escrowDuration", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "escrowPool", "outputs": [{ "internalType": "contract ITimeLockPool", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "escrowPortion", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_account", "type": "address" }], "name": "getDepositsOf", "outputs": [{ "components": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint64", "name": "start", "type": "uint64" }, { "internalType": "uint64", "name": "end", "type": "uint64" }], "internalType": "struct TimeLockPool.Deposit[]", "name": "", "type": "tuple[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_account", "type": "address" }], "name": "getDepositsOfLength", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_lockDuration", "type": "uint256" }], "name": "getMultiplier", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "blockNumber", "type": "uint256" }], "name": "getPastTotalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }, { "internalType": "uint256", "name": "blockNumber", "type": "uint256" }], "name": "getPastVotes", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }], "name": "getRoleAdmin", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "getRoleMember", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }], "name": "getRoleMemberCount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_account", "type": "address" }], "name": "getTotalDeposit", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "getVotes", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "address", "name": "account", "type": "address" }], "name": "grantRole", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "address", "name": "account", "type": "address" }], "name": "hasRole", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "addedValue", "type": "uint256" }], "name": "increaseAllowance", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "maxBonus", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "maxLockDuration", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }], "name": "nonces", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "numCheckpoints", "outputs": [{ "internalType": "uint32", "name": "", "type": "uint32" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }, { "internalType": "uint256", "name": "deadline", "type": "uint256" }, { "internalType": "uint8", "name": "v", "type": "uint8" }, { "internalType": "bytes32", "name": "r", "type": "bytes32" }, { "internalType": "bytes32", "name": "s", "type": "bytes32" }], "name": "permit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "pointsCorrection", "outputs": [{ "internalType": "int256", "name": "", "type": "int256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "pointsPerShare", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "address", "name": "account", "type": "address" }], "name": "renounceRole", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "address", "name": "account", "type": "address" }], "name": "revokeRole", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "rewardToken", "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_token", "type": "address" }, { "internalType": "address", "name": "_receiver", "type": "address" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "saveToken", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }], "name": "supportsInterface", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "transfer", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "sender", "type": "address" }, { "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_depositId", "type": "uint256" }, { "internalType": "address", "name": "_receiver", "type": "address" }], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_account", "type": "address" }], "name": "withdrawableRewardsOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "withdrawnRewards", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_account", "type": "address" }], "name": "withdrawnRewardsOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }]
+
+  var web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+  var stakecontract = new web3.eth.Contract(contract_abi, contract_address);
+  var tokencontract = new web3.eth.Contract(tokenabi, tokencontract_address);
+
+  var unlockWallet = () => {
+    if (typeof web3 !== 'undefined') {
+      web3.givenProvider.enable().then(async function (address) {
+        if (await web3.eth.net.getNetworkType().then() == "private") {         
+            $('#metamask').html(window.ethereum.selectedAddress);   
+            let address=document.getElementById('metamask');
+            address.innerHTML=address.innerHTML.substring(0, 4)+'...'+address.innerHTML.slice(-4);
+            ref();
+        } else {
+          Swal.fire({title: "<h5 style='color:white'>Please Select Binance Testnet Network</h5>",  icon: "warning", background:"#808080",  showConfirmButton: false, timer:1000})         
+        }
+      }).catch(function (err) { Swal.fire({title: "<h5 style='color:white'>Unlock your wallet</h5>",  icon: "warning", background:"#808080",  showConfirmButton: false, timer:1000}) });
+    } else {
+      Swal.fire({title: "<h5 style='color:white'>Please Install Metamask Wallet</h5>",  icon: "warning", background:"#808080",  showConfirmButton: false, timer:1000})
+    }
+  }
+
+  var refresh = async () => {
+    if (await web3.eth.net.getNetworkType().then() != "private" || window.ethereum.selectedAddress == null) {
+      document.getElementById("metamask").innerHTML = "Connect to a wallet";
+      document.getElementById("unstaketable").click();
+    }
+    else {      
+      document.getElementById('metamask').innerHTML = window.ethereum.selectedAddress;
+      let address=document.getElementById('metamask');
+      address.innerHTML=address.innerHTML.substring(0, 4)+'...'+address.innerHTML.slice(-4);
+      let allowance = await tokencontract.methods.allowance(window.ethereum.selectedAddress, contract_address).call();
+      if (allowance == 0) {
+        let balance = await tokencontract.methods.balanceOf(window.ethereum.selectedAddress).call();
+        document.getElementById("flexiblebal").innerHTML = balance / 10 ** 18;
+        document.getElementById('approve').innerHTML = "Approve";
+        document.getElementById('rewrds').style.display = "none";
+      }
+      else {
+        document.getElementById("flexiblebal").innerHTML = allowance / 10 ** 18;
+        document.getElementById('approve').innerHTML = "Stake";
+        let claim = await stakecontract.methods.getDepositsOfLength(window.ethereum.selectedAddress).call();
+        if (claim != 0) {
+          document.getElementById('rewrds').style.display = "block";
+        }
+      }
+    }   
+  }
+  setInterval(refresh, 1000);
+
+  var ref = async () => {
+    
+    if (document.getElementById("metamask").innerHTML == "Connect to a wallet") {
+      document.getElementById("unstaketable").click();
+    }else{   
+      clearInterval(th);   
+      document.getElementById("recived").innerHTML = '';
+      document.getElementById("unstaketable").click();
+    }   
+  }
+  var th = setInterval(ref, 1000);
+
+  var approve = async () => {
+    if (document.getElementById("metamask").innerHTML != "Connect to a wallet") {
+      if (document.getElementById("approve").innerHTML == "Approve") {
+        let amount = document.getElementById("flex_amount").value;
+        if (amount != 0) {
+          let balance = await tokencontract.methods.balanceOf(window.ethereum.selectedAddress).call();
+          if (balance != 0) {
+            let amt = web3.utils.toWei(amount, "ether")
+            await tokencontract.methods.approve(contract_address, amt).send({ from: window.ethereum.selectedAddress }, function (err, result) {
+              if (err) {
+                Swal.fire({title: "<h5 style='color:white'>Transaction Error</h5>",  icon: "error", background:" #808080", showConfirmButton: false, timer:1000});            
+              }
+              if (result) {
+                Swal.fire({title:"<h5 style='color:white'>Your transaction is sent, Please wait for confirmation.</h5>", icon: "success", background:" #808080",  showConfirmButton: false, timer:5000});                 
+              }
+            });
+            setTimeout(() => {
+              Swal.fire({title:"<h5 style='color:white'>Transaction Confirm.</h5>", icon: "success", background:"#808080",  showConfirmButton: false, timer:1000});  
+              document.getElementById('approve').innerHTML = "Stake";
+              document.getElementById("flex_amount").value = "0";
+              ref();
+            }, 3000);
+          } else {
+            Swal.fire({title: "<h5 style='color:white'>Not Enough Tokens</h5>", icon: "warning", background:" #808080", showConfirmButton: false, timer:1000});  
+          }
+        } else {
+          Swal.fire({title: "<h5 style='color:white'>Enter the valid amount</h5>", icon: "warning", background:" #808080", showConfirmButton: false, timer:1000});
+        }
+      } else if (document.getElementById("approve").innerHTML == "Stake") {
+        let amount = document.getElementById("flex_amount").value;
+        if (amount != 0) {
+          let duration, time;
+          let locktime = document.getElementById("lock").innerHTML;
+          if (locktime != "0 weeks") {
+            duration = locktime.split(" ");
+            time = duration[0] * 604800;
+          }
+          else {
+            time = 0;
+          }
+          let amt = web3.utils.toWei(amount, "ether")
+          await stakecontract.methods.deposit(amt, time, window.ethereum.selectedAddress).send({ from: window.ethereum.selectedAddress }, function (err, result) {
+            if (err) {
+                Swal.fire({title: "<h5 style='color:white'>Transaction Error</h5>",  icon: "error", background:"#808080", showConfirmButton: false, timer:1000});            
+            }
+            if (result) {
+                Swal.fire({title:"<h5 style='color:white'>Your transaction is sent, Please wait for confirmation.</h5>", icon: "success", background:"#808080",  showConfirmButton: false, timer:1000});                 
+            }
+          });
+          setTimeout(() => {
+            Swal.fire({title:"<h5 style='color:white'>Transaction Confirm.</h5>", icon: "success", background:"#808080",  showConfirmButton: false, timer:1000});  
+            document.getElementById("flex_amount").value = "0";
+            document.getElementById('approve').innerHTML = "Stake";
+            document.getElementById("lock").innerHTML = "0 weeks";
+            ref();
+          }, 3000)
+
+        } else {
+          Swal.fire({title: "<h5 style='color:white'>Enter the valid amount</h5>", icon: "warning", background:" #808080", showConfirmButton: false, timer:1000});
+        }
+      }
+    } else {
+      Swal.fire({title: "<h5 style='color:white'>Unlock your wallet</h5>",  icon: "warning", background:"#808080",  showConfirmButton: false, timer:1000})
+    }
+  }
+
+  var claim = async () => {
+    if (document.getElementById("metamask").innerHTML != "Connect to a wallet") {
+      await stakecontract.methods.claimRewards(window.ethereum.selectedAddress).send({ from: window.ethereum.selectedAddress }, function (err, result) {
+        if (err) {
+          Swal.fire({title: "<h5 style='color:white'>Transaction Error</h5>",  icon: "error", background:" #808080", showConfirmButton: false, timer:1000});            
+        }
+        if (result) {
+          Swal.fire({title:"<h5 style='color:white'>Your transaction is sent, Please wait for confirmation.</h5>", icon: "success", background:"#808080",  showConfirmButton: false, timer:1000});                  
+        }
+      });
+      setTimeout(() => {
+        Swal.fire({title:"<h5 style='color:white'>Transaction Confirm.</h5>", icon: "success", background:"#808080",  showConfirmButton: false, timer:1000});
+      }, 2000);
+    } else {
+      Swal.fire({title: "<h5 style='color:white'>Unlock your wallet</h5>",  icon: "warning", background:"#808080",  showConfirmButton: false, timer:1000})
+    }
+    ref();
+  }
+
+  var unstake = async () => {
+    let totaldeposit = await stakecontract.methods.getDepositsOf(window.ethereum.selectedAddress).call();
+    if (totaldeposit.length != 0) {
+      for (var i = 0; i < totaldeposit.length; i++) {
+        if (Math.floor(Date.now() / 1000) >= totaldeposit[i].end) {
+          document.getElementById("recived").innerHTML = document.getElementById("recived").innerHTML + `<tr><td>` + new Date(totaldeposit[i].start * 1000).toLocaleString() + `</td><td>` + totaldeposit[i].amount / 10 ** 18 + `</td><td>` + new Date(totaldeposit[i].end * 1000).toLocaleString() + `</td><td><button className='btn w-100 mt-5 ' onClick={withdraw(${i})} >Unstake</button></td></tr>`
+        } else {
+          document.getElementById("recived").innerHTML = document.getElementById("recived").innerHTML + `<tr><td>` + new Date(totaldeposit[i].start * 1000).toLocaleString() + `</td><td>` + totaldeposit[i].amount / 10 ** 18 + `</td><td>` + new Date(totaldeposit[i].end * 1000).toLocaleString() + `</td><td><button className='btn w-100 mt-5' disabled onClick={withdraw(${i})} >Unstake</button></td></tr>`
+        }
+      }
+    } else {
+      document.getElementById("recived").innerHTML = "<tr><td colspan='4' align='center'>No stake yet</td></tr>";
+    }
+  }
+
+  var withdraw = async (id) => {
+    if (document.getElementById("metamask").innerHTML != "Connect to a wallet") {
+      await stakecontract.methods.withdraw(id, window.ethereum.selectedAddress).send({ from: window.ethereum.selectedAddress }, function (err, result) {
+        if (err) {
+          Swal.fire({title: "<h5 style='color:white'>Transaction Error</h5>",  icon: "error", background:" #808080", showConfirmButton: false, timer:1000});            
+        }
+        if (result) {
+          Swal.fire({title:"<h5 style='color:white'>Your transaction is sent, Please wait for confirmation.</h5>", icon: "success", background:"#808080",  showConfirmButton: false, timer:1000});                 
+        }
+      });
+      setTimeout(() => {
+        Swal.fire({title:"<h5 style='color:white'>Transaction Confirm.</h5>", icon: "success", background:"#808080",  showConfirmButton: false, timer:1000}); 
+        ref();
+      }, 2000);
+    }else{
+      Swal.fire({title: "<h5 style='color:white'>Unlock your wallet</h5>",  icon: "warning", background:"#808080",  showConfirmButton: false, timer:1000})
+    }
+  }
+
+  var bal = async () => {
+    let bal = document.getElementById("flexiblebal").innerHTML;
+    document.getElementById("flex_amount").value = bal;
+  }
+</script>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+</body>
+
+</html>
